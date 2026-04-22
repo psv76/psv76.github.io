@@ -281,6 +281,16 @@ p {
   margin-bottom: 6px;
 }
 
+.contact-link {
+  color: #31465f;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
 .contact-box {
   background: #ffffff;
   border: 1px solid #d9dde2;
