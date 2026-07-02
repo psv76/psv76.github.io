@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEIROLINKS Project — связанная модель проекта проводного умного дома</title>
+  <meta name="description" content="NEIROLINKS Project связывает DWG-план, щит, кабельный журнал, автоматику, блоки питания и спецификацию в одну модель проекта." />
+  <meta name="theme-color" content="#2563eb" />
+  <link rel="preload" as="image" href="assets/screens/app-board.png" />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-2: #eef4ff;
+      --text: #111827;
+      --muted: #64748b;
+      --line: #dbe4f0;
+      --blue: #2563eb;
+      --blue-2: #174ac5;
+      --green: #16834a;
+      --red: #dc2626;
+      --yellow: #f59e0b;
+      --shadow: 0 24px 70px rgba(15, 23, 42, .12);
+      --radius: 28px;
+      --radius-sm: 18px;
+      --max: 1180px;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(37, 99, 235, .16), transparent 32rem),
+        radial-gradient(circle at 85% 8%, rgba(22, 131, 74, .10), transparent 28rem),
+        linear-gradient(180deg, #f9fbff 0%, var(--bg) 34%, #ffffff 100%);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, .78);
+      border-bottom: 1px solid rgba(219, 228, 240, .76);
+    }
+
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      object-fit: contain;
+      padding: 4px;
+    }
+
+    .brand-name {
+      font-weight: 760;
+      letter-spacing: -.02em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover { color: var(--blue); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      font-weight: 650;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, .10);
+      border-color: #b9c9df;
+    }
+
+    .btn.primary {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .btn.primary:hover { background: var(--blue-2); }
+
+    .hero, section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding-left: 22px;
+      padding-right: 22px;
+    }
+
+    .hero {
+      padding-top: 70px;
+      padding-bottom: 70px;
+      display: grid;
+      grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, .10);
+      color: #174ac5;
+      border: 1px solid rgba(37, 99, 235, .18);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1, h2, h3 { line-height: 1.08; letter-spacing: -.04em; margin: 0; }
+    h1 { font-size: clamp(42px, 6vw, 76px); margin-top: 22px; }
+    h2 { font-size: clamp(32px, 4vw, 52px); }
+    h3 { font-size: 22px; }
+
+    .hero-text {
+      font-size: clamp(18px, 2vw, 22px);
+      color: #334155;
+      margin: 24px 0 0;
+      max-width: 680px;
+    }
+
+    .hero-text strong { color: var(--text); }
+
+    .hero-actions {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .facts {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 680px;
+    }
+
+    .fact {
+      padding: 12px 13px;
+      border: 1px solid rgba(219, 228, 240, .90);
+      background: rgba(255, 255, 255, .78);
+      border-radius: 16px;
+      color: #334155;
+      font-size: 14px;
+    }
+
+    .fact b { display: block; color: var(--text); font-size: 15px; }
+
+    .screen-shell {
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.62));
+      border: 1px solid rgba(219, 228, 240, .92);
+      padding: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .screen-top {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 999px; background: #cbd5e1; }
+    .dot.blue { background: var(--blue); }
+    .dot.green { background: var(--green); }
+    .dot.yellow { background: var(--yellow); }
+
+    .screen-shell img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 18px;
+      margin-top: 10px;
+      cursor: zoom-in;
+    }
+
+    section { padding-top: 56px; padding-bottom: 56px; }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, .8fr) minmax(0, 1fr);
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 26px;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: #475569;
+      font-size: 18px;
+    }
+
+    .plain-card, .dark-card, .step, .shot-card, .output-card, .roadmap-card, .case-card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.86);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 14px 45px rgba(15, 23, 42, .06);
+    }
+
+    .plain-card { padding: 28px; }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .dark-card {
+      padding: 28px;
+      background: #111827;
+      color: #f8fafc;
+      border-color: rgba(255,255,255,.12);
+    }
+
+    .dark-card p { color: #cbd5e1; }
+
+    .mini-title {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .diagram {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .diagram-box {
+      border: 1px dashed rgba(203, 213, 225, .9);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 112px;
+      background: rgba(255,255,255,.04);
+    }
+
+    .diagram-box b { display: block; margin-bottom: 6px; }
+    .diagram-box span { color: inherit; opacity: .78; font-size: 14px; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .step {
+      padding: 22px;
+      position: relative;
+      min-height: 185px;
+    }
+
+    .step-num {
+      display: inline-grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--panel-2);
+      color: var(--blue);
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .step p, .shot-card p, .output-card p, .roadmap-card p, .case-card p {
+      color: #475569;
+      margin: 10px 0 0;
+    }
+
+    .case-card {
+      margin-top: 18px;
+      padding: 26px;
+      display: grid;
+      grid-template-columns: .7fr 1.3fr;
+      gap: 24px;
+      align-items: start;
+      background: linear-gradient(135deg, #ffffff, #f1f6ff);
+    }
+
+    .code-lines {
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.6;
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 16px;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .shots-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .shot-card { overflow: hidden; }
+    .shot-card .shot-text { padding: 20px 22px 24px; }
+    .shot-card img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-bottom: 1px solid var(--line);
+      cursor: zoom-in;
+      background: #eef2f7;
+    }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .tag.ok { background: rgba(22, 131, 74, .10); color: #166534; }
+    .tag.warn { background: rgba(245, 158, 11, .13); color: #92400e; }
+    .tag.err { background: rgba(220, 38, 38, .10); color: #991b1b; }
+
+    .check-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .check-list li {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 13px 14px;
+      background: #fff;
+      color: #334155;
+    }
+
+    .output-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .output-card { overflow: hidden; }
+    .output-card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      cursor: zoom-in;
+      border-bottom: 1px solid var(--line);
+    }
+    .output-card div { padding: 20px; }
+
+    .bot-wrap {
+      display: grid;
+      grid-template-columns: .72fr 1.28fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .phone {
+      max-width: 330px;
+      margin: 0 auto;
+      border-radius: 34px;
+      padding: 10px;
+      background: #0f172a;
+      box-shadow: var(--shadow);
+    }
+
+    .phone img {
+      width: 100%;
+      border-radius: 26px;
+      object-fit: cover;
+      cursor: zoom-in;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .roadmap-card { padding: 22px; }
+    .roadmap-card .icon { font-size: 24px; margin-bottom: 8px; }
+
+    .status-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 42px 22px 54px;
+      color: #64748b;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      z-index: 100;
+      background: rgba(2, 6, 23, .86);
+      padding: 26px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.open { display: flex; }
+    .modal img {
+      max-width: min(96vw, 1480px);
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 18px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
+      background: #fff;
+    }
+
+    .modal button {
+      position: fixed;
+      right: 22px;
+      top: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(15,23,42,.8);
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 980px) {
+      .hero, .section-head, .why-grid, .case-card, .bot-wrap, .status-block { grid-template-columns: 1fr; }
+      .flow, .diagram, .roadmap { grid-template-columns: repeat(2, 1fr); }
+      .output-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 700px) {
+      .hero { padding-top: 42px; }
+      .facts, .flow, .shots-grid, .check-list, .diagram, .roadmap { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      .brand-name { font-size: 14px; }
+      .footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Основная навигация">
+      <a class="brand" href="#top" aria-label="NEIROLINKS Project">
+        <img class="brand-mark" src="assets/logo/neiro_links_logo.svg" alt="NEIROLINKS" />
+        <span class="brand-name">NEIROLINKS Project</span>
+      </a>
+      <div class="nav-links">
+        <a href="#why">Зачем</a>
+        <a href="#how">Логика</a>
+        <a href="#now">Сейчас</a>
+        <a href="#output">Выдача</a>
+        <a href="#next">Дальше</a>
+      </div>
+      <a class="btn primary" href="#now">Посмотреть экраны</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <span class="eyebrow">Внутренний инструмент NEIROLINKS · развитие в продукт</span>
+        <h1 id="hero-title">Проект как связанная модель, а не набор отдельных таблиц</h1>
+        <p class="hero-text">
+          <strong>NEIROLINKS Project</strong> связывает DWG-план, щит, кабельный журнал, автоматику Wiren Board,
+          блоки питания, LED-ленты и спецификацию в одну рабочую модель проекта.
+        </p>
+        <p class="hero-text">
+          AutoCAD остаётся чертежом. Excel остаётся форматом выдачи. Программа становится рабочим слоем между ними:
+          читает данные, показывает связи, помогает проверять проект и формирует документы.
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#why">Зачем это нужно</a>
+          <a class="btn" href="#how">Как работает</a>
+        </div>
+        <div class="facts" aria-label="Ключевые факты">
+          <div class="fact"><b>DWG → модель</b> Блоки, ID, помещения, кабели</div>
+          <div class="fact"><b>Модель → проверки</b> Автоматы, каналы, питание</div>
+          <div class="fact"><b>Модель → выдача</b> Excel, PDF, спецификация</div>
+        </div>
+      </div>
+      <div class="screen-shell">
+        <div class="screen-top"><span class="dot blue"></span><span class="dot yellow"></span><span class="dot green"></span><span>Визуальная компоновка щита WB-4</span></div>
+        <img src="assets/screens/app-board.png" alt="Визуальный щит NEIROLINKS Project" data-full="assets/screens/app-board.png" />
+      </div>
+    </section>
+
+    <section id="why" aria-labelledby="why-title">
+      <div class="section-head">
+        <h2 id="why-title">Зачем это нужно, если раньше работали без программы</h2>
+        <p>Раньше тоже можно было работать вручную. Проблема не в том, что AutoCAD и Excel плохие. Проблема в связях, которые приходится удерживать в голове и переносить между документами.</p>
+      </div>
+      <div class="why-grid">
+        <div class="dark-card">
+          <div class="mini-title">Обычный процесс</div>
+          <h3>Проект живёт в нескольких местах</h3>
+          <div class="diagram">
+            <div class="diagram-box"><b>AutoCAD</b><span>План, блоки, подписи, ID линий</span></div>
+            <div class="diagram-box"><b>Excel</b><span>Кабельный журнал, спецификация, таблицы щита</span></div>
+            <div class="diagram-box"><b>Решения</b><span>Автоматы, каналы, БП, шины, сценарии</span></div>
+            <div class="diagram-box"><b>Наладка</b><span>Поиск соответствий по чертежу, таблицам и щиту</span></div>
+          </div>
+        </div>
+        <div class="plain-card">
+          <div class="mini-title">Где возникает проблема</div>
+          <h3>Изменение надо повторить везде</h3>
+          <p>Добавили линию — её нужно не забыть в журнале. Поменяли щит — нужно проверить автоматы. Перенесли нагрузку — нужно проверить канал модуля. Добавили LED-ленту — нужно проверить блок питания, длину, остаток катушки и спецификацию.</p>
+          <p>NEIROLINKS Project нужен не для того, чтобы “рисовать красивее”. Он нужен, чтобы проектные связи были видны в одном месте.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <div class="section-head">
+        <h2 id="how-title">Логика работы</h2>
+        <p>Одна линия может одновременно относиться к плану, кабельному журналу, автомату, модулю, каналу, блоку питания, спецификации и будущей наладке.</p>
+      </div>
+      <div class="flow">
+        <article class="step"><span class="step-num">1</span><h3>На плане есть ID</h3><p>Инженер работает в AutoCAD и расставляет проектные блоки: устройство, помещение, кабель, высота, точка подключения.</p></article>
+        <article class="step"><span class="step-num">2</span><h3>Программа читает данные</h3><p>Из DWG считываются ID, типы устройств, помещения, кабели, нагрузки и связи. Данные попадают в локальную базу проекта.</p></article>
+        <article class="step"><span class="step-num">3</span><h3>Связи собираются</h3><p>Линия связывается со щитом, автоматом, модулем Wiren Board, каналом, питанием и оборудованием.</p></article>
+        <article class="step"><span class="step-num">4</span><h3>Получается выдача</h3><p>Из модели формируются таблицы и документы для монтажа, сборки щита, закупки и наладки.</p></article>
+      </div>
+      <div class="case-card">
+        <div>
+          <div class="mini-title">Пример</div>
+          <h3>Линия 306 — люстра гостиная</h3>
+          <p>Одна строка на плане проходит через несколько представлений проекта.</p>
+        </div>
+        <pre class="code-lines">DWG:              светильник 306 на плане
+Кабельный журнал: WB-4 → Гостиная → 306 → Люстра гостиная
+Кабель:           ВВГнг(А)-LS 3x1,5
+Автоматизация:    A42/K3
+Распределение:    группа освещения в щите WB-4
+Выдача:           Excel / PDF / спецификация</pre>
+      </div>
+    </section>
+
+    <section aria-labelledby="dwg-title">
+      <div class="section-head">
+        <h2 id="dwg-title">DWG остаётся рабочим чертежом</h2>
+        <p>Программа не заменяет AutoCAD. Она использует проектные блоки, ID и атрибуты как входные данные для модели проекта.</p>
+      </div>
+      <div class="screen-shell">
+        <div class="screen-top"><span class="dot blue"></span><span>Фрагмент DWG-плана с ID линий</span></div>
+        <img src="assets/screens/dwg-plan.png" alt="Фрагмент DWG-плана с ID линий" data-full="assets/screens/dwg-plan.png" />
+      </div>
+    </section>
+
+    <section id="now" aria-labelledby="now-title">
+      <div class="section-head">
+        <h2 id="now-title">Что программа делает сейчас</h2>
+        <p>Это не список обещаний. Это текущие рабочие части внутреннего инструмента NEIROLINKS.</p>
+      </div>
+      <div class="shots-grid">
+        <article class="shot-card">
+          <img src="assets/screens/app-cable-lines.png" alt="Кабельные линии в NEIROLINKS Project" data-full="assets/screens/app-cable-lines.png" />
+          <div class="shot-text"><h3>Кабельные линии</h3><p>Показывает щит, помещение, ID линии, назначение, кабель, длину и точку подключения.</p><div class="tag-row"><span class="tag">ID линии</span><span class="tag">кабель</span><span class="tag">точка подключения</span></div></div>
+        </article>
+        <article class="shot-card">
+          <img src="assets/screens/app-distribution.png" alt="Распределение линий по автоматам" data-full="assets/screens/app-distribution.png" />
+          <div class="shot-text"><h3>Распределение 230 В</h3><p>Группирует потребители по аппаратам защиты и показывает характеристики выбранного автомата.</p><div class="tag-row"><span class="tag">QF</span><span class="tag">QFD</span><span class="tag">нагрузки</span></div></div>
+        </article>
+        <article class="shot-card">
+          <img src="assets/screens/app-automation.png" alt="Автоматизация Wiren Board" data-full="assets/screens/app-automation.png" />
+          <div class="shot-text"><h3>Автоматизация Wiren Board</h3><p>Показывает модули, COM-группы, выходы, входы, питание 24 В и RS-485 в одной структуре.</p><div class="tag-row"><span class="tag">модули</span><span class="tag">каналы</span><span class="tag">RS-485</span></div></div>
+        </article>
+        <article class="shot-card">
+          <img src="assets/screens/app-power.png" alt="Блоки питания и потребители" data-full="assets/screens/app-power.png" />
+          <div class="shot-text"><h3>Блоки питания</h3><p>Отдельно ведёт DC-питание: напряжение, нагрузку, запас, потребителей и вход 230 В.</p><div class="tag-row"><span class="tag ok">запас</span><span class="tag warn">нагрузка</span><span class="tag">PSU</span></div></div>
+        </article>
+        <article class="shot-card">
+          <img src="assets/screens/app-led.png" alt="Раскрой LED-лент" data-full="assets/screens/app-led.png" />
+          <div class="shot-text"><h3>LED-ленты</h3><p>Считает участки, катушки, закупку, остатки, общую длину и привязку к линиям.</p><div class="tag-row"><span class="tag">катушки</span><span class="tag">остатки</span><span class="tag">закупка</span></div></div>
+        </article>
+        <article class="shot-card">
+          <img src="assets/screens/app-eui-check.png" alt="Оборудование ЭУИ и проверка рамок" data-full="assets/screens/app-eui-check.png" />
+          <div class="shot-text"><h3>ЭУИ и рамки</h3><p>Показывает комплектацию по помещениям и проверяет совпадение постов рамок с механизмами.</p><div class="tag-row"><span class="tag err">ошибка</span><span class="tag ok">OK</span><span class="tag">рамки</span></div></div>
+        </article>
+        <article class="shot-card">
+          <img src="assets/screens/app-specification.png" alt="Спецификация в NEIROLINKS Project" data-full="assets/screens/app-specification.png" />
+          <div class="shot-text"><h3>Спецификация</h3><p>Собирает кабель, щитовое оборудование, WB-модули, блоки питания, датчики, ЭУИ и LED-ленты.</p><div class="tag-row"><span class="tag">оборудование</span><span class="tag">количество</span><span class="tag">артикулы</span></div></div>
+        </article>
+        <article class="shot-card">
+          <img src="assets/screens/app-board.png" alt="Визуальная компоновка щита" data-full="assets/screens/app-board.png" />
+          <div class="shot-text"><h3>Щит</h3><p>Показывает DIN-компоновку: автоматы, модули Wiren Board, БП и подписи линий.</p><div class="tag-row"><span class="tag">DIN</span><span class="tag">модули</span><span class="tag">подписи</span></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="checks-title">
+      <div class="section-head">
+        <h2 id="checks-title">Что программа помогает проверить</h2>
+        <p>Проверки нужны не для красивого отчёта. Они показывают места, где проектная связь не завершена или противоречит модели.</p>
+      </div>
+      <div class="plain-card">
+        <ul class="check-list">
+          <li>Линия есть на плане, но не назначена точка подключения.</li>
+          <li>Нагрузка есть, но не распределена по автомату.</li>
+          <li>Модуль есть, но не назначено питание.</li>
+          <li>Устройство есть, но не выбран RS-485 порт.</li>
+          <li>Блок питания перегружен или имеет маленький запас.</li>
+          <li>Посты рамок не совпадают с количеством механизмов.</li>
+          <li>Оборудование есть в проекте, но не попало в спецификацию.</li>
+          <li>В DWG и модели проекта появились расхождения.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="output" aria-labelledby="output-title">
+      <div class="section-head">
+        <h2 id="output-title">Что получается на выходе</h2>
+        <p>Excel и PDF остаются нормальным форматом передачи смежникам. Разница в том, что они формируются из модели, а не собираются вручную как отдельная жизнь проекта.</p>
+      </div>
+      <div class="output-grid">
+        <article class="output-card"><img src="assets/screens/excel-cable-log.png" alt="Кабельный журнал в Excel" data-full="assets/screens/excel-cable-log.png" /><div><h3>Кабельный журнал</h3><p>Таблица для монтажа: щит, помещение, ID, назначение, кабель, длина и подключение.</p></div></article>
+        <article class="output-card"><img src="assets/screens/excel-specification.png" alt="Спецификация в Excel" data-full="assets/screens/excel-specification.png" /><div><h3>Спецификация</h3><p>Сводная закупочная ведомость по кабелю, щиту, Wiren Board и оборудованию.</p></div></article>
+        <article class="output-card"><img src="assets/screens/pdf-cable-log.png" alt="PDF-выдача кабельного журнала" data-full="assets/screens/pdf-cable-log.png" /><div><h3>PDF для выдачи</h3><p>Печатный вид с объектом, шифром проекта и нумерацией страниц.</p></div></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="bot-title">
+      <div class="bot-wrap">
+        <div class="phone"><img src="assets/screens/bot-telegram.jpg" alt="Telegram-бот NEIROLINKS по проектной базе" data-full="assets/screens/bot-telegram.jpg" /></div>
+        <div>
+          <span class="eyebrow">Направление развития</span>
+          <h2 id="bot-title" style="margin-top:18px">Бот — быстрый доступ к той же базе</h2>
+          <p class="hero-text">Если данные проекта собраны в модель, по ним можно задавать вопросы: что за устройство, какой канал управляет нагрузкой, какой кабель идёт на линию, в каком щите находится автомат.</p>
+          <p class="hero-text">Бот — не отдельная магия. Это короткий путь к проектной базе для инженера, монтажника или наладчика.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="next" aria-labelledby="next-title">
+      <div class="section-head">
+        <h2 id="next-title">Что будет дальше</h2>
+        <p>Следующий этап — не только читать проект и формировать документы, но и двигаться от модели к готовой настройке системы.</p>
+      </div>
+      <div class="roadmap">
+        <article class="roadmap-card"><div class="icon">🧩</div><h3>Project → DWG щит</h3><p>Формирование файлов щитов, блоков, атрибутов, подписей и монтажной структуры.</p></article>
+        <article class="roadmap-card"><div class="icon">⚙️</div><h3>Wiren Board</h3><p>Подготовка конфигураций, скриптов, проверка проекта перед записью на контроллер.</p></article>
+        <article class="roadmap-card"><div class="icon">🧾</div><h3>Версии выдачи</h3><p>Фиксация релиза проекта: документы, модель, артефакты, возможность сравнения изменений.</p></article>
+        <article class="roadmap-card"><div class="icon">🔎</div><h3>Сравнение</h3><p>DWG ↔ Project ↔ контроллер: видеть, что изменилось и где требуется решение инженера.</p></article>
+        <article class="roadmap-card"><div class="icon">💬</div><h3>AI-помощник</h3><p>Быстрые ответы по линиям, каналам, щитам, устройствам и задачам объекта.</p></article>
+        <article class="roadmap-card"><div class="icon">☁️</div><h3>Будущий продукт</h3><p>Обновления, шаблоны, каталоги, обратная связь, лицензии и поддержка.</p></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="status-title">
+      <div class="status-block">
+        <div class="plain-card">
+          <div class="mini-title">Текущий статус</div>
+          <h2 id="status-title">Внутренний инструмент</h2>
+          <p>Сейчас NEIROLINKS Project используется для выстраивания собственного процесса проектирования и взаимодействия со смежниками.</p>
+        </div>
+        <div class="plain-card">
+          <div class="mini-title">Позиция</div>
+          <h2>Не обещаем лишнего</h2>
+          <p>Это ещё не универсальная коммерческая система для любых проектов. Это рабочий инструмент, на котором проверяется логика будущего продукта для проектирования проводных систем на Wiren Board.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div><b>NEIROLINKS Project</b><br />DWG → модель проекта → проверки → документы → будущая настройка Wiren Board</div>
+    <a class="btn" href="#top">Наверх</a>
+  </footer>
+
+  <div class="modal" id="imageModal" aria-hidden="true" role="dialog" aria-label="Просмотр изображения">
+    <button type="button" aria-label="Закрыть">×</button>
+    <img alt="" />
+  </div>
+
+  <script>
+    const modal = document.getElementById('imageModal');
+    const modalImg = modal.querySelector('img');
+    const closeBtn = modal.querySelector('button');
+
+    function openModal(src, alt) {
+      modalImg.src = src;
+      modalImg.alt = alt || '';
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      modalImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('img[data-full]').forEach(img => {
+      img.addEventListener('click', () => openModal(img.dataset.full, img.alt));
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', event => {
+      if (event.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>
