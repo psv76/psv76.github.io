@@ -66,24 +66,42 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       min-width: 0;
     }
 
     .brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
       background: #fff;
       border: 1px solid var(--line);
       object-fit: contain;
-      padding: 4px;
+      padding: 6px;
+      flex: 0 0 auto;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+    }
+
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+      min-width: 0;
     }
 
     .brand-name {
-      font-weight: 760;
-      letter-spacing: -.02em;
+      font-weight: 820;
+      letter-spacing: -.03em;
       white-space: nowrap;
+      font-size: 21px;
+    }
+
+    .brand-tagline {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+      letter-spacing: .02em;
     }
 
     .nav-links {
@@ -154,14 +172,31 @@
     }
 
     h1, h2, h3 { line-height: 1.08; letter-spacing: -.04em; margin: 0; }
-    h1 { font-size: clamp(42px, 6vw, 76px); margin-top: 22px; }
+    h1 { font-size: clamp(32px, 5vw, 64px); }
     h2 { font-size: clamp(32px, 4vw, 52px); }
     h3 { font-size: 22px; }
+
+    .hero-product {
+      font-size: clamp(42px, 6vw, 74px);
+      line-height: 1.02;
+      letter-spacing: -.05em;
+      font-weight: 860;
+      color: var(--text);
+    }
+
+    .hero-title {
+      margin-top: 12px;
+      font-size: clamp(24px, 3.2vw, 38px);
+      line-height: 1.12;
+      letter-spacing: -.03em;
+      color: #334155;
+      font-weight: 700;
+    }
 
     .hero-text {
       font-size: clamp(18px, 2vw, 22px);
       color: #334155;
-      margin: 24px 0 0;
+      margin: 20px 0 0;
       max-width: 680px;
     }
 
@@ -504,10 +539,25 @@
     @media (max-width: 700px) {
       .hero { padding-top: 42px; }
       .facts, .flow, .shots-grid, .check-list, .diagram, .roadmap { grid-template-columns: 1fr; }
-      .btn { width: 100%; }
-      .brand-name { font-size: 14px; }
+      .hero-actions .btn { width: 100%; }
+      .brand-mark { width: 42px; height: 42px; padding: 5px; }
+      .brand-name { font-size: 17px; }
+      .brand-tagline { font-size: 10px; }
+      .topbar .btn { width: auto; padding: 10px 16px; white-space: nowrap; }
+      .hero-product { font-size: clamp(40px, 12vw, 58px); }
+      .hero-title { font-size: 26px; }
       .footer { flex-direction: column; align-items: flex-start; }
     }
+
+    @media (max-width: 540px) {
+      .nav { padding: 12px 14px; gap: 10px; }
+      .brand-copy { min-width: 0; }
+      .brand-name { font-size: 15px; }
+      .brand-tagline { display: none; }
+      .topbar .btn { padding: 10px 14px; font-size: 13px; }
+      .hero { gap: 24px; }
+    }
+
   </style>
 </head>
 <body>
@@ -515,7 +565,10 @@
     <nav class="nav" aria-label="Основная навигация">
       <a class="brand" href="#top" aria-label="NEIROLINKS Project">
         <img class="brand-mark" src="assets/logo/neiro_links_logo.svg" alt="NEIROLINKS" />
-        <span class="brand-name">NEIROLINKS Project</span>
+        <span class="brand-copy">
+          <span class="brand-name">NEIROLINKS</span>
+          <span class="brand-tagline">Будущее уже сегодня</span>
+        </span>
       </a>
       <div class="nav-links">
         <a href="#why">Зачем</a>
@@ -531,15 +584,15 @@
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
       <div>
-        <span class="eyebrow">Внутренний инструмент NEIROLINKS · развитие в продукт</span>
-        <h1 id="hero-title">Проект как связанная модель, а не набор отдельных таблиц</h1>
+        <div class="hero-product">NEIROLINKS Project</div>
+        <h1 id="hero-title" class="hero-title">Цифровая модель объекта</h1>
         <p class="hero-text">
-          <strong>NEIROLINKS Project</strong> связывает DWG-план, щит, кабельный журнал, автоматику Wiren Board,
-          блоки питания, LED-ленты и спецификацию в одну рабочую модель проекта.
+          Программа связывает DWG-план, щит, кабельный журнал, автоматику Wiren Board,
+          блоки питания, LED-ленты, спецификацию и будущий быстрый доступ к данным в одну рабочую модель проекта.
         </p>
         <p class="hero-text">
-          AutoCAD остаётся чертежом. Excel остаётся форматом выдачи. Программа становится рабочим слоем между ними:
-          читает данные, показывает связи, помогает проверять проект и формирует документы.
+          AutoCAD остаётся чертежом. Excel остаётся форматом выдачи. Внутри программы проект, щит,
+          контроллер и бот опираются на одну и ту же базу связей: линии, автоматы, модули, питание и оборудование.
         </p>
         <div class="hero-actions">
           <a class="btn primary" href="#why">Зачем это нужно</a>
@@ -622,7 +675,7 @@
     <section id="now" aria-labelledby="now-title">
       <div class="section-head">
         <h2 id="now-title">Что программа делает сейчас</h2>
-        <p>Это не список обещаний. Это текущие рабочие части внутреннего инструмента NEIROLINKS.</p>
+        <p>Это не список обещаний. Это текущие рабочие части NEIROLINKS Project.</p>
       </div>
       <div class="shots-grid">
         <article class="shot-card">
