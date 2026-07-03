@@ -514,9 +514,7 @@
       .hero { padding-top: 42px; }
       .facts, .flow, .shots-grid, .check-list, .diagram, .roadmap { grid-template-columns: 1fr; }
       .hero-actions .btn { width: 100%; }
-      .brand-mark { width: 42px; height: 42px; padding: 5px; }
-      .brand-name { font-size: 17px; }
-      .brand-tagline { font-size: 10px; }
+      .brand-logo-full { width: clamp(170px, 48vw, 230px); }
       .topbar .btn { width: auto; padding: 10px 16px; white-space: nowrap; }
       .hero-product { font-size: clamp(40px, 12vw, 58px); }
       .hero-title { font-size: 26px; }
@@ -526,8 +524,7 @@
     @media (max-width: 540px) {
       .nav { padding: 12px 14px; gap: 10px; }
       .brand-copy { min-width: 0; }
-      .brand-name { font-size: 15px; }
-      .brand-tagline { display: none; }
+      .brand-logo-full { width: 170px; }
       .topbar .btn { padding: 10px 14px; font-size: 13px; }
       .hero { gap: 24px; }
     }
@@ -562,7 +559,7 @@
         <h1 id="hero-title" class="hero-title">Цифровая модель объекта</h1>
         <p class="hero-text">
           Программа связывает DWG-план, щит, кабельный журнал, автоматику Wiren Board,
-          блоки питания, LED-ленты, спецификацию и будущий быстрый доступ к данным в одну рабочую модель проекта.
+          блоки питания, LED-ленты, спецификацию и быстрый доступ к данным в одну рабочую модель проекта.
         </p>
         <p class="hero-text">
           AutoCAD остаётся чертежом. Excel остаётся форматом выдачи. Внутри программы проект, щит,
