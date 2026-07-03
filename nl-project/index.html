@@ -66,42 +66,15 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 50px;
-      height: 50px;
-      border-radius: 16px;
-      background: #fff;
-      border: 1px solid var(--line);
-      object-fit: contain;
-      padding: 6px;
       flex: 0 0 auto;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
-    }
-
-    .brand-copy {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.05;
       min-width: 0;
     }
 
-    .brand-name {
-      font-weight: 820;
-      letter-spacing: -.03em;
-      white-space: nowrap;
-      font-size: 21px;
-    }
-
-    .brand-tagline {
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 11px;
-      white-space: nowrap;
-      letter-spacing: .02em;
+    .brand-logo-full {
+      display: block;
+      width: clamp(260px, 28vw, 460px);
+      height: auto;
+      object-fit: contain;
     }
 
     .nav-links {
