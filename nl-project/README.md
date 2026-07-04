@@ -40,4 +40,4 @@ https://psv76.github.io/nl-project/
 
 Страница не использует внешние библиотеки, шрифты и CDN. Всё лежит локально и подходит для GitHub Pages.
 
-<!-- refresh pages 2026-07-03 -->
+<!-- refresh pages 2026-07-05 -->
