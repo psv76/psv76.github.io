@@ -503,8 +503,66 @@
       cursor: pointer;
     }
 
+
+    .process-preview {
+      padding-top: 18px;
+      padding-bottom: 56px;
+    }
+
+    .process-panel {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.88);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      overflow: hidden;
+    }
+
+    .process-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .process-head h2 {
+      font-size: clamp(28px, 4vw, 46px);
+    }
+
+    .process-head p {
+      margin: 8px 0 0;
+      color: #475569;
+      font-size: 17px;
+      max-width: 680px;
+    }
+
+    .process-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex: 0 0 auto;
+    }
+
+    .process-diagram {
+      border: 1px solid rgba(219,228,240,.92);
+      border-radius: 22px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .process-diagram img {
+      width: 100%;
+      height: auto;
+      cursor: zoom-in;
+      background: #fff;
+    }
+
     @media (max-width: 980px) {
       .hero, .section-head, .why-grid, .case-card, .bot-wrap, .status-block { grid-template-columns: 1fr; }
+      .process-head { align-items: flex-start; flex-direction: column; }
+      .process-actions { justify-content: flex-start; }
       .flow, .diagram, .roadmap { grid-template-columns: repeat(2, 1fr); }
       .output-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
@@ -512,6 +570,9 @@
 
     @media (max-width: 700px) {
       .hero { padding-top: 42px; }
+      .process-preview { padding-top: 8px; }
+      .process-panel { padding: 14px; border-radius: 22px; }
+      .process-actions .btn { width: 100%; }
       .facts, .flow, .shots-grid, .check-list, .diagram, .roadmap { grid-template-columns: 1fr; }
       .hero-actions .btn { width: 100%; }
       .brand-logo-full { width: clamp(170px, 48vw, 230px); }
@@ -534,7 +595,7 @@
 <body>
   <header class="topbar">
     <nav class="nav" aria-label="Основная навигация">
-      <a class="brand" href="#top" aria-label="NEIROLINKS">
+      <a class="brand" href="../" aria-label="NEIROLINKS — главная страница">
         <img
           class="brand-logo-full"
           src="assets/logo/Logo_black_Full.png"
@@ -542,8 +603,9 @@
         />
       </a>
       <div class="nav-links">
+        <a href="../">Главная</a>
+        <a href="#process">Процесс</a>
         <a href="#why">Зачем</a>
-        <a href="#how">Логика</a>
         <a href="#now">Сейчас</a>
         <a href="#output">Выдача</a>
         <a href="#next">Дальше</a>
@@ -566,20 +628,29 @@
           Excel остаётся форматом выдачи.<br>
           Внутри программы проект, щит, контроллер и бот опираются на одну и ту же базу связей: линии, автоматы, модули, питание и оборудование.
         </p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#why">Зачем это нужно</a>
-          <a class="btn" href="#how">Как работает</a>
-          <a class="btn" href="assets/diagrams/nl-project-process.svg" target="_blank" rel="noopener">Подробная схема процесса</a>
-        </div>
-        <div class="facts" aria-label="Ключевые факты">
-          <div class="fact"><b>DWG → модель</b> Блоки, ID, помещения, кабели</div>
-          <div class="fact"><b>Модель → проверки</b> Автоматы, каналы, питание</div>
-          <div class="fact"><b>Модель → выдача</b> Excel, PDF, спецификация</div>
-        </div>
+
       </div>
       <div class="screen-shell">
         <div class="screen-top"><span class="dot blue"></span><span class="dot yellow"></span><span class="dot green"></span><span>Визуальная компоновка щита WB-4</span></div>
         <img src="assets/screens/app-board.png" alt="Визуальный щит NEIROLINKS Project" data-full="assets/screens/app-board.png" />
+      </div>
+    </section>
+
+    <section id="process" class="process-preview" aria-labelledby="process-title">
+      <div class="process-panel">
+        <div class="process-head">
+          <div>
+            <h2 id="process-title">Целевой рабочий процесс</h2>
+            <p>Короткая схема: от исходных данных и проектных решений до выдачи, реализации, настройки и эксплуатации.</p>
+          </div>
+          <div class="process-actions">
+            <a class="btn primary" href="process/">Подробнее</a>
+            <a class="btn" href="../">На главную</a>
+          </div>
+        </div>
+        <div class="process-diagram">
+          <img src="assets/diagrams/nl-project-compact-flow.svg" alt="Короткая схема целевого рабочего процесса NEIROLINKS Project" data-full="assets/diagrams/nl-project-compact-flow.svg" />
+        </div>
       </div>
     </section>
 
@@ -761,8 +832,11 @@
   </main>
 
   <footer class="footer">
-    <div><b>NEIROLINKS Project</b><br />DWG → модель проекта → проверки → документы → настройка Wiren Board</div>
-    <a class="btn" href="#top">Наверх</a>
+    <div><b>NEIROLINKS Project</b><br />Решения → модель → выдача → реализация → настройка → эксплуатация</div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <a class="btn" href="../">На главную</a>
+      <a class="btn" href="#top">Наверх</a>
+    </div>
   </footer>
 
   <div class="modal" id="imageModal" aria-hidden="true" role="dialog" aria-label="Просмотр изображения">

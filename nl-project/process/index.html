@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEIROLINKS Project — подробная схема процесса</title>
+  <meta name="description" content="Подробная схема целевого рабочего процесса NEIROLINKS Project." />
+  <meta name="theme-color" content="#2563eb" />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --text: #111827;
+      --muted: #64748b;
+      --line: #dbe4f0;
+      --blue: #2563eb;
+      --blue-2: #174ac5;
+      --shadow: 0 24px 70px rgba(15, 23, 42, .12);
+      --radius: 28px;
+      --max: 1320px;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(37, 99, 235, .16), transparent 32rem),
+        radial-gradient(circle at 85% 8%, rgba(22, 131, 74, .10), transparent 28rem),
+        linear-gradient(180deg, #f9fbff 0%, var(--bg) 48%, #ffffff 100%);
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display:block; max-width:100%; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, .80);
+      border-bottom: 1px solid rgba(219, 228, 240, .76);
+    }
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand-logo-full {
+      width: clamp(200px, 22vw, 320px);
+      height: auto;
+      object-fit: contain;
+    }
+    .actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      font-weight: 700;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(15, 23, 42, .10); border-color: #b9c9df; }
+    .btn.primary { background: var(--blue); border-color: var(--blue); color:#fff; }
+    .btn.primary:hover { background: var(--blue-2); }
+    main {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 54px 22px 64px;
+    }
+    .head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 68px);
+      line-height: 1.02;
+      letter-spacing: -.055em;
+    }
+    .lead {
+      margin: 16px 0 0;
+      color: #475569;
+      font-size: clamp(17px, 2vw, 22px);
+      max-width: 920px;
+    }
+    .pill {
+      border: 1px solid rgba(37, 99, 235, .22);
+      background: rgba(37, 99, 235, .08);
+      color: var(--blue);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .diagram-card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.88);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      overflow: hidden;
+    }
+    .diagram-toolbar {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding: 0 4px 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .diagram-scroll {
+      border: 1px solid rgba(219,228,240,.92);
+      border-radius: 22px;
+      background: #fff;
+      overflow: auto;
+      max-height: calc(100vh - 240px);
+    }
+    .diagram-scroll img {
+      width: 100%;
+      min-width: 980px;
+      height: auto;
+      background:#fff;
+    }
+    .note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    @media (max-width: 760px) {
+      .nav { padding: 12px 14px; gap: 12px; }
+      .brand-logo-full { width: 160px; }
+      .actions .btn { padding: 10px 12px; font-size: 13px; }
+      main { padding: 34px 14px 42px; }
+      .head { grid-template-columns: 1fr; }
+      .diagram-card { padding: 12px; border-radius: 22px; }
+      .diagram-scroll { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="../../" aria-label="NEIROLINKS — главная страница">
+        <img class="brand-logo-full" src="../assets/logo/Logo_black_Full.png" alt="NEIROLINKS — Будущее уже сегодня" />
+      </a>
+      <div class="actions">
+        <a class="btn" href="../">Назад к Project</a>
+        <a class="btn" href="../../">На главную</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="head">
+      <div>
+        <h1>Подробная схема процесса</h1>
+        <p class="lead">Целевая логика NEIROLINKS Project: от исходных данных и проектных решений до выдачи, реализации, настройки и эксплуатации.</p>
+      </div>
+      <span class="pill">большая схема</span>
+    </div>
+
+    <section class="diagram-card" aria-labelledby="diagram-title">
+      <div class="diagram-toolbar">
+        <strong id="diagram-title">NEIROLINKS Project — целевой рабочий процесс</strong>
+        <div class="actions">
+          <a class="btn primary" href="../assets/diagrams/nl-project-process.svg" target="_blank" rel="noopener">Открыть SVG</a>
+          <a class="btn" href="../">Вернуться назад</a>
+        </div>
+      </div>
+      <div class="diagram-scroll">
+        <img src="../assets/diagrams/nl-project-process.svg" alt="Подробная схема целевого рабочего процесса NEIROLINKS Project" />
+      </div>
+      <p class="note">На небольшом экране схему можно прокручивать горизонтально внутри блока.</p>
+    </section>
+  </main>
+</body>
+</html>
